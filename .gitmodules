@@ -1,6 +1,9 @@
-[submodule "VkFFT"]
-	path = VkFFT
-	url = https://github.com/DTolm/VkFFT.git
-[submodule "glslang"]
-	path = glslang
+[submodule "deps/glslang"]
+	path = deps/glslang
 	url = https://github.com/KhronosGroup/glslang.git
+[submodule "deps/VkFFT"]
+	path = deps/VkFFT
+	url = https://github.com/DTolm/VkFFT.git
+[submodule "deps/VKL"]
+	path = deps/VKL
+	url = https://github.com/sharhar/VKL.git
