@@ -6,5 +6,6 @@ import sys
 
 cimport init_wrapper
 cimport sim_wrapper
+cimport renderer_wrapper
 
 assert sizeof(int) == sizeof(np.int32_t)

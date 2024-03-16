@@ -27,6 +27,7 @@ sources = [
     'src/wrapper.pyx',
     'src/init.cpp',
     'src/sim.cpp',
+    'src/renderer.cpp',
     'deps/VKL/src/VKLBuffer.cpp',
     'deps/VKL/src/VKLCommandBuffer.cpp',
     'deps/VKL/src/VKLDescriptorSet.cpp',

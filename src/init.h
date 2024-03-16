@@ -16,7 +16,7 @@ struct MyPhysicalDeviceProperties {
     const char* device_name;
 };
 
-void init(bool debug);
-struct MyPhysicalDeviceProperties* get_devices(int* count);
+void init_extern(bool debug);
+struct MyPhysicalDeviceProperties* get_devices_extern(int* count);
 
 #endif // INIT_H

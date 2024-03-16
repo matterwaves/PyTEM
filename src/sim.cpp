@@ -1,7 +1,6 @@
-#include "base.h"
-#include "sim.h"
+#include "internal.h"
 
-void* create_simulator(int device_index, int rows, int cols) {
+MySimulator* create_simulator(int device_index, SimulatorConfig config) {
     MySimulator* sim = new MySimulator();
 
     sim->device.create(VKLDeviceCreateInfo()
@@ -11,4 +10,8 @@ void* create_simulator(int device_index, int rows, int cols) {
     sim->queue = sim->device.getQueue(VKL_QUEUE_TYPE_ALL, 0);
 
     return sim;
+}
+
+void get_image_dims_extern(MySimulator* sim, int* pRows, int* pCols) {
+
 }

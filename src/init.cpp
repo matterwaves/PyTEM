@@ -1,12 +1,10 @@
-#include "init.h"
-
-#include "base.h"
+#include "internal.h"
 
 #include <stdio.h>
 
 MyContext _ctx;
 
-void init(bool debug) {
+void init_extern(bool debug) {
     _ctx.instance.create(VKLInstanceCreateInfo()
                             .procAddr(vkGetInstanceProcAddr)
                             .debug(VK_TRUE));
@@ -35,7 +33,7 @@ void init(bool debug) {
     }
 }
 
-struct MyPhysicalDeviceProperties* get_devices(int* count) {
+struct MyPhysicalDeviceProperties* get_devices_extern(int* count) {
     *count = _ctx.instance.getPhysicalDevices().size();
     return _ctx.devices;
 }

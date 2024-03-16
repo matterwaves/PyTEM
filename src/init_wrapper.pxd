@@ -17,19 +17,17 @@ cdef extern from "init.h":
 
         int device_type;
 
-        const char* device_name;
+        const char* device_name
+    
+    void init_extern(bool debug)
+    MyPhysicalDeviceProperties* get_devices_extern(int* count)
 
 cpdef inline init(bool debug):
-    cdef extern from "init.h":
-        void init(bool debug)
-    init(debug)
+    init_extern(debug)
 
 cpdef inline get_devices():
-    cdef extern from "init.h":
-        MyPhysicalDeviceProperties* get_devices(int* count)
-    
     cdef int count = 0
-    cdef MyPhysicalDeviceProperties* devices = get_devices(&count)
+    cdef MyPhysicalDeviceProperties* devices = get_devices_extern(&count)
 
     if not devices:
         return []
