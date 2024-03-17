@@ -19,6 +19,8 @@ MySimulator* create_simulator_extern(int device_index, struct SimulatorConfig co
 
     sim->allocator.allocate();
 
+    build_renderer(sim);
+
     return sim;
 }
 
