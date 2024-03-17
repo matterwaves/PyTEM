@@ -27,7 +27,7 @@ cpdef inline set_atoms(unsigned long long sim_handle, np.ndarray coords, np.ndar
     set_atoms_extern(<MySimulator*>sim_handle, &in_coords[0, 0], &in_proton_counts[0], coords.shape[0])
 
 cpdef inline compute_potential(unsigned long long sim_handle, list[float] angles):
-     assert len(angles) == 3, "angles must have shape (3,)"
+    assert len(angles) == 3, "angles must have shape (3,)"
 
     cdef np.ndarray[ndim=1, dtype=np.float32_t] in_matricies = np.zeros(shape=(16,), dtype=np.float32)
 
@@ -65,9 +65,9 @@ cpdef inline compute_potential(unsigned long long sim_handle, list[float] angles
 
 cpdef inline get_potential(unsigned long long sim_handle, np.ndarray out):
     cdef int rows, cols
-    get_image_dims_extern(<MySimulator*>sim, &rows, &cols)
+    get_image_dims_extern(<MySimulator*>sim_handle, &rows, &cols)
 
-    cdef np.ndarray[ndim=2, dtype=np.float32_t] out_array = np.zeros(shape(rows, cols), dtype=np.float32)
+    cdef np.ndarray[ndim=2, dtype=np.float32_t] out_array = np.zeros(shape=(rows, cols), dtype=np.float32)
     get_potential_extern(<MySimulator*>sim_handle, &out_array[0, 0])
 
     return out_array

@@ -3,7 +3,7 @@
 
 #include "base.h"
 
-void allocate_renderer(MySimulator* sim, void* out, int allocation_count);
+void allocate_renderer(MySimulator* sim);
 void build_renderer(MySimulator* sim);
 
 void set_atomic_potentials_extern(MySimulator* sim, void* data);

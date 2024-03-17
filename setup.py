@@ -42,6 +42,7 @@ sources = [
     'deps/VKL/src/VKLQueue.cpp',
     'deps/VKL/src/VKLRenderPass.cpp',
     'deps/VKL/src/VKLSurface.cpp',
+    'deps/VKL/src/VKLStaticAllocator.cpp',
     'deps/VKL/src/VKLSwapChain.cpp'
 ]
 

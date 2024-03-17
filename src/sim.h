@@ -3,16 +3,16 @@
 
 #include "base.h"
 
-typedef struct SimulatorConfig {
+struct SimulatorConfig {
     int rows;
     int cols;
     int atomicPotentialsRows;
     int atomicPotentialsCols;
     int atomicPotentialsCount;
     int maxAtomCount;
-} SimulatorConfig;
+};
 
-MySimulator* create_simulator_extern(int device_index, SimulatorConfig config);
+MySimulator* create_simulator_extern(int device_index, struct SimulatorConfig config);
 
 void get_image_dims_extern(MySimulator* sim, int* pRows, int* pCols);
 
