@@ -57,7 +57,7 @@ setup(
                   language='c++',
                   library_dirs=[vulkan_root + '/lib'],
                   libraries=['dl', 'pthread', 'vulkan'],
-                  extra_compile_args=['-O2'],
+                  extra_compile_args=['-O0', '-g'],
                   extra_link_args=['-g'],
                   include_dirs=include_directories
         )

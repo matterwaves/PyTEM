@@ -18,13 +18,25 @@ typedef struct {
 } PC;
 
 void allocate_renderer(MySimulator* sim) {
-    sim->renderer.renderTarget.create(VKLImageCreateInfo()
-        .device(&sim->device)
+    printf("queue index: %d\n", sim->queue->getFamilyIndex());
+
+    sim->renderer.renderTarget = new VKLImage(VKLImageCreateInfo()
+        .device(sim->device)
         .extent(sim->config.rows, sim->config.cols, 1)
         .usage(VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_SRC_BIT)
         .format(VK_FORMAT_R32_SFLOAT)
     );
 
+    printf("queue index: %d\n", sim->queue->getFamilyIndex());
+    LOG_INFO("Renderer render target created");
+
+    printf("queue: %p\n", sim->queue);
+
+    sim->renderer.renderTarget->transition(sim->queue, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+                                            VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
+
+    LOG_INFO("Renderer render target transitioned");
+/*
     sim->renderer.vertexBuffer.create(VKLBufferCreateInfo()
         .device(&sim->device)
         .size(3 * 2 * sizeof(float))
@@ -45,21 +57,23 @@ void allocate_renderer(MySimulator* sim) {
         .arrayLevels(sim->config.atomicPotentialsCount)
     );
 
-    sim->renderer.renderTargetAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.renderTarget.memoryRequirements());
-    sim->renderer.vertexBufferAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.vertexBuffer.memoryRequirements());
-    sim->renderer.instanceBufferAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.instanceBuffer.memoryRequirements());
-    sim->renderer.atomicPotentialsAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.atomicPotentials.memoryRequirements());
+    //sim->renderer.renderTargetAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.renderTarget.memoryRequirements());
+    //sim->renderer.vertexBufferAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.vertexBuffer.memoryRequirements());
+    //sim->renderer.instanceBufferAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.instanceBuffer.memoryRequirements());
+    //sim->renderer.atomicPotentialsAllocationIndex = sim->allocator.registerMemoryRequirement(sim->renderer.atomicPotentials.memoryRequirements());
+    */
 }
 
 void build_renderer(MySimulator* sim) {
-    sim->renderer.renderTarget.bind(sim->allocator.getAllocation(sim->renderer.renderTargetAllocationIndex));
-    sim->renderer.vertexBuffer.bind(sim->allocator.getAllocation(sim->renderer.vertexBufferAllocationIndex));
-    sim->renderer.instanceBuffer.bind(sim->allocator.getAllocation(sim->renderer.instanceBufferAllocationIndex));
-    sim->renderer.atomicPotentials.bind(sim->allocator.getAllocation(sim->renderer.atomicPotentialsAllocationIndex));
+    //sim->renderer.renderTarget.bind(sim->allocator.getAllocation(sim->renderer.renderTargetAllocationIndex));
+    //sim->renderer.vertexBuffer.bind(sim->allocator.getAllocation(sim->renderer.vertexBufferAllocationIndex));
+    //sim->renderer.instanceBuffer.bind(sim->allocator.getAllocation(sim->renderer.instanceBufferAllocationIndex));
+    //sim->renderer.atomicPotentials.bind(sim->allocator.getAllocation(sim->renderer.atomicPotentialsAllocationIndex));
 
-    sim->queue->getCmdBuffer()->reset();
-    sim->renderer.renderTarget.transition(sim->queue, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
+    sim->renderer.renderTarget->transition(sim->queue, VK_ACCESS_TRANSFER_READ_BIT, VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL,
                                             VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_TRANSFER_BIT);
+
+    /*
 
 return;
     sim->renderer.renderTargetView.create(VKLImageViewCreateInfo()
@@ -145,9 +159,12 @@ return;
     VK_CALL(sim->device.vk.CreateSampler(sim->device.handle(), &samplerCreateInfo, sim->device.allocationCallbacks(), &sim->renderer.atomicPotentialsSampler));
 
     sim->renderer.descriptorSet->writeImage(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, sim->renderer.atomicPotentialsView.handle(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, sim->renderer.atomicPotentialsSampler);
+
+    */
 }
 
 void set_atomic_potentials_extern(MySimulator* sim, void* data) {
+    /*
     sim->renderer.atomicPotentials.uploadDataBuffer(sim->queue, data, sim->config.atomicPotentialsRows * 
                                                                       sim->config.atomicPotentialsCols * 
                                                                       sim->config.atomicPotentialsCount * 
@@ -155,9 +172,11 @@ void set_atomic_potentials_extern(MySimulator* sim, void* data) {
 
     sim->renderer.atomicPotentials.transition(sim->queue, VK_ACCESS_SHADER_READ_BIT, VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL,
                                                 VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT, VK_PIPELINE_STAGE_FRAGMENT_SHADER_BIT);
+                                                */
 }
 
 void set_atoms_extern(MySimulator* sim, void* coords, void* proton_counts, int count) {
+       /*
     if(count > sim->config.maxAtomCount) {
         LOG_ERROR("Too many atoms for renderer!!!");
         return;
@@ -178,9 +197,11 @@ void set_atoms_extern(MySimulator* sim, void* coords, void* proton_counts, int c
     sim->renderer.instanceBuffer.uploadData(sim->queue, instanceData, count * sizeof(AtomInstance), 0);
 
     free(instanceData);
+    */
 }
 
 void compute_potential_extern(MySimulator* sim, float* matricies) {
+    /*
     VKLCommandBuffer* cmdBuffer = sim->queue->getCmdBuffer();
 
     VkClearValue clearColorStruct;
@@ -217,8 +238,9 @@ void compute_potential_extern(MySimulator* sim, float* matricies) {
     cmdBuffer->end();
 
     sim->queue->submitAndWait(cmdBuffer);
+    */
 }
 
 void get_potential_extern(MySimulator* sim, void* out) {
-    sim->renderer.renderTarget.downloadDataBuffer(sim->queue, out, sim->config.rows * sim->config.cols * sizeof(float));
+    //sim->renderer.renderTarget.downloadDataBuffer(sim->queue, out, sim->config.rows * sim->config.cols * sizeof(float));
 }
