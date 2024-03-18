@@ -10,6 +10,7 @@ struct SimulatorConfig {
     int atomicPotentialsCols;
     int atomicPotentialsCount;
     int maxAtomCount;
+    float pix_size;
 };
 
 MySimulator* create_simulator_extern(int device_index, struct SimulatorConfig config);

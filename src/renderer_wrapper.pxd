@@ -63,11 +63,11 @@ cpdef inline compute_potential(unsigned long long sim_handle, list[float] angles
 
     compute_potential_extern(<MySimulator*>sim_handle, &in_matricies[0])
 
-cpdef inline get_potential(unsigned long long sim_handle, np.ndarray out):
+cpdef inline get_potential(unsigned long long sim_handle):
     cdef int rows, cols
     get_image_dims_extern(<MySimulator*>sim_handle, &rows, &cols)
 
-    cdef np.ndarray[ndim=2, dtype=np.float32_t] out_array = np.zeros(shape=(rows, cols), dtype=np.float32)
+    cdef np.ndarray[ndim=2, dtype=np.complex64_t] out_array = np.zeros(shape=(rows, cols), dtype=np.complex64)
     get_potential_extern(<MySimulator*>sim_handle, &out_array[0, 0])
 
     return out_array

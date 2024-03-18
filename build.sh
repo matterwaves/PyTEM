@@ -5,3 +5,4 @@ export PROJECT_ROOT="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pw
 
 python3 -m build
 
+#bear -- python3 setup.py build_ext --inplace

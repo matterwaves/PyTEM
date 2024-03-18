@@ -5,6 +5,15 @@
 MyContext _ctx;
 
 void init_extern(bool debug) {
+    LOG_INFO("Initializing glslang...");
+
+    if(!glslang_initialize_process()) {
+        LOG_ERROR("Failed to initialize glslang process");
+        return;
+    }
+
+    LOG_INFO("Initializing Vulkan Instance...");
+    
     _ctx.instance.create(VKLInstanceCreateInfo()
                             .procAddr(vkGetInstanceProcAddr)
                             .debug(VK_TRUE));
@@ -31,6 +40,9 @@ void init_extern(bool debug) {
         _ctx.devices[i].device_name = new char[deviceNameLength];
         strcpy((char*)_ctx.devices[i].device_name, properties.deviceName);
     }
+
+
+    
 }
 
 struct MyPhysicalDeviceProperties* get_devices_extern(int* count) {

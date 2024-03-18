@@ -14,6 +14,7 @@ cdef extern from "sim.h":
         int atomicPotentialsCols
         int atomicPotentialsCount
         int maxAtomCount
+        float pix_size
     
     MySimulator* create_simulator_extern(int device_index, SimulatorConfig config)
 
@@ -27,6 +28,7 @@ cpdef inline create_simulator(int device_index, dict config_dict):
     config.atomicPotentialsCols = config_dict['atomicPotentialsCols']
     config.atomicPotentialsCount = config_dict['atomicPotentialsCount']
     config.maxAtomCount = config_dict['maxAtomCount']
+    config.pix_size = config_dict['pixelSize']
 
     return <unsigned long long>create_simulator_extern(device_index, config)
 

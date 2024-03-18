@@ -19,8 +19,9 @@ include_directories = [
     numpy_include,
     project_srcs,
     vulkan_root + '/include',
+    vulkan_root + '/include/glslang/Include',
     project_root + '/deps/VKL/include',
-    #project_root + '/glslang/glslang/Include'
+    project_root + '/deps/VkFFT/vkFFT'
 ]
 
 sources = [
@@ -56,8 +57,12 @@ setup(
                   sources=sources,
                   language='c++',
                   library_dirs=[vulkan_root + '/lib'],
-                  libraries=['dl', 'pthread', 'vulkan'],
-                  extra_compile_args=['-O0', '-g'],
+                  libraries=['dl', 'pthread', 'vulkan', 'SPIRV', 'glslang', 
+                             'MachineIndependent', 'GenericCodeGen', 
+                             'OSDependent', 'SPIRV-Tools', 'SPIRV-Tools-opt',
+                             'SPIRV-Tools-link', 'SPIRV-Tools-reduce',
+                             'glslang-default-resource-limits'],
+                  extra_compile_args=['-O0', '-g', '-std=c++11'],
                   extra_link_args=['-g'],
                   include_dirs=include_directories
         )
