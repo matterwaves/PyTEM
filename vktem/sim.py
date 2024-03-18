@@ -41,8 +41,6 @@ class Config:
 class Simulator:
     def __init__(self, config: Config, device_index: int = 0) -> None:
         self.simulator_handle = tem_native.create_simulator(device_index, config.getConfigDict())
-
-        print(self.simulator_handle)
     
     def setAtomicPotentials(self, atomic_potentials: np.ndarray):
         tem_native.set_atomic_potentials(self.simulator_handle, atomic_potentials)

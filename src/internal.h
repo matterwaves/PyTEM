@@ -8,6 +8,7 @@
 #include "base.h"
 #include "init.h"
 #include "sim.h"
+#include "device_context.h"
 
 typedef struct {
     VKLInstance instance;
@@ -15,6 +16,12 @@ typedef struct {
 } MyContext;
 
 extern MyContext _ctx;
+
+struct MyDeviceContext {
+    uint32_t deviceCount;
+    VKLDevice* devices;
+    const VKLQueue** queues;
+};
 
 struct MySimulator {
     // Device handle/context
