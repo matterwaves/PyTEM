@@ -189,6 +189,11 @@ void build_renderer(MySimulator* sim) {
     VK_CALL(sim->device.vk.CreateSampler(sim->device.handle(), &samplerCreateInfo, sim->device.allocationCallbacks(), &sim->renderer.atomicPotentialsSampler));
 
     sim->renderer.descriptorSet->writeImage(0, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, sim->renderer.atomicPotentialsView.handle(), VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL, sim->renderer.atomicPotentialsSampler);
+
+    sim->renderer.commandBuffer[0] = new VKLCommandBuffer(sim->queue);
+    sim->renderer.commandBuffer[1] = new VKLCommandBuffer(sim->queue);
+
+    sim->renderer.currentCommandBuffer = 0;
 }
 
 void set_atomic_potentials_extern(MySimulator* sim, void* data) {
@@ -227,13 +232,14 @@ void set_atoms_extern(MySimulator* sim, void* coords, void* proton_counts, int c
 }
 
 void compute_potential_extern(MySimulator* sim, float* matricies) {
-    VKLCommandBuffer* cmdBuffer = sim->queue->getCmdBuffer();
+    VKLCommandBuffer* cmdBuffer = sim->renderer.commandBuffer[sim->renderer.currentCommandBuffer];
     VkCommandBuffer commandBufferHandle = cmdBuffer->handle();
 
     sim->launchParams.commandBuffer = &commandBufferHandle;
     
     VkClearValue clearColorStruct;
-    clearColorStruct.color.float32[0] = 0.137777;
+    clearColorStruct.color.float32[0] = 0;
+    clearColorStruct.color.float32[1] = 0;
 
     sim->renderer.framebuffer.setClearValue(clearColorStruct, 0);
 
@@ -302,10 +308,17 @@ void compute_potential_extern(MySimulator* sim, float* matricies) {
 
     cmdBuffer->end();
 
-    sim->queue->submitAndWait(cmdBuffer);
+    sim->device.waitForFence(sim->fftvulkanhandles.fence);
+    sim->device.resetFence(sim->fftvulkanhandles.fence);
+
+    sim->queue->submit(cmdBuffer, sim->fftvulkanhandles.fence);
+
+    sim->renderer.currentCommandBuffer = (sim->renderer.currentCommandBuffer + 1) % 2;    
 }
 
 void get_potential_extern(MySimulator* sim, void* out) {
+    sim->device.waitForFence(sim->fftvulkanhandles.fence);
+
     sim->baseBuffer.downloadData(sim->queue, out, 2 * sim->config.rows * sim->config.cols * sizeof(float), 0);
     //sim->renderer.renderTarget.downloadDataBuffer(sim->queue, out, sim->config.rows * sim->config.cols * sizeof(float));
 }

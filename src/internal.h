@@ -61,6 +61,9 @@ struct MySimulator {
         int atomicPotentialsAllocationIndex;
         VKLImageView atomicPotentialsView;
         VkSampler atomicPotentialsSampler;
+
+        VKLCommandBuffer* commandBuffer[2];
+        uint32_t currentCommandBuffer;
     } renderer;
 };
 

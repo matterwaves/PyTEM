@@ -34,7 +34,7 @@ MySimulator* create_simulator_extern(int device_index, struct SimulatorConfig co
     sim->fftvulkanhandles.device = sim->device.handle();
     sim->fftvulkanhandles.queue = sim->queue->handle();
     sim->fftvulkanhandles.commandPool = sim->queue->getCmdBuffer()->pool();
-    sim->fftvulkanhandles.fence = sim->queue->fence();
+    sim->fftvulkanhandles.fence = sim->device.createFence(VK_FENCE_CREATE_SIGNALED_BIT);
     sim->fftvulkanhandles.buffer = sim->baseBuffer.handle();
     sim->fftvulkanhandles.bufferSize = 2 * sim->config.rows * sim->config.cols * sizeof(float);
 

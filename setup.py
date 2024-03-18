@@ -58,7 +58,7 @@ setup(
                   language='c++',
                   library_dirs=[vulkan_root + '/lib'],
                   libraries=['dl', 'pthread', 'vulkan', 'glslang', 'SPIRV', 
-                             'MachineIndependent', 'GenericCodeGen', 'OGLCompiler', 
+                             'MachineIndependent', 'GenericCodeGen',  #'OGLCompiler', 
                              'OSDependent', 'SPIRV-Tools', 'SPIRV-Tools-opt',
                              'SPIRV-Tools-link', 'SPIRV-Tools-reduce',
                              'glslang-default-resource-limits'],

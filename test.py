@@ -132,13 +132,12 @@ start_time = time.time()
 sim.setAtomicPotentials(atom_pots)
 sim.setAtoms(coords, proton_counts)
 
-for _ in range(10000):
-    sim.computePotential([0.0, 0.0, 0.0])
+sim.computePotential([0.0, 18.0, 0.0])
 
 print("--- %s seconds ---" % (time.time() - start_time))
 
 
-potential = sim.getPotential() / (62 * 62)
+potential = sim.getPotential() / (512 * 512 * 512 * 512)
 
 fig, axs = plt.subplots(1, 2, figsize=(10, 5)) # Create a figure and a 1x2 subplot
 
