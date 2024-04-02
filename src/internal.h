@@ -9,6 +9,7 @@
 #include "init.h"
 #include "sim.h"
 #include "device_context.h"
+#include "execution.h"
 
 typedef struct {
     VKLInstance instance;
@@ -19,8 +20,84 @@ extern MyContext _ctx;
 
 struct MyDeviceContext {
     uint32_t deviceCount;
+    uint32_t submissinThreadCount;
     VKLDevice* devices;
     const VKLQueue** queues;
+};
+
+struct MyExecutionBuffer {
+    VKLBuffer buffer;
+    int allocationIndex;
+    VKLAllocation allocation;
+    
+    int stagingEnabled;
+    VKLBuffer stagingBuffer;
+    int stagingAllocationIndex;
+    VKLAllocation stagingAllocation;
+};
+
+struct MyExecutionImage {
+    VKLImage image;
+    int allocationIndex;
+    VKLAllocation allocation;
+
+    VKLImageView imageView;
+    
+    unsigned int rows;
+    unsigned int cols;
+    unsigned int depth;
+    unsigned int layers;
+    unsigned int channels;
+};
+
+struct MyExecutionStageGraphics {
+    VKLRenderPass renderpass;
+    VKLFramebuffer framebuffer;
+
+    VKLPipelineLayout pipelineLayout;
+    VKLPipeline pipeline;
+    VKLDescriptorSet* descriptorSet;
+};
+
+struct MyExecutionStageCompute {
+    VKLPipelineLayout pipelineLayout;
+    VKLPipeline pipeline;
+    VKLDescriptorSet* descriptorSet;
+};
+
+struct MyExecutionStageFFT {
+    VkFFTApplication fftApp = {};
+    VkFFTConfiguration fftConfig = {};
+    VkFFTLaunchParams launchParams = {}; 
+};
+
+struct MyExecutionStage {
+    ExecutionType type;
+    void* stage; 
+};
+
+struct MyExecutionPipelineInstance {
+    VKLDevice* device;
+    const VKLQueue* queue;
+
+    VKLStaticAllocator allocator;
+
+    unsigned int stageCount;
+    struct ExecutionStageConfig* stagesConfigs;
+    MyExecutionStage* stages;
+
+    unsigned int bufferCount;
+    struct ExecutionBufferConfig* buffersConfigs;
+    MyExecutionBuffer* buffers;
+
+    unsigned int imageCount;
+    struct ExecutionImageConfig* imagesConfigs;
+    MyExecutionImage* images;
+};
+
+struct MyExecutionPipeline {
+    MyDeviceContext* deviceContext;
+    MyExecutionPipelineInstance* instances;
 };
 
 struct MySimulator {
